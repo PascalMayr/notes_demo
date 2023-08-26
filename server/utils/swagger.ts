@@ -23,7 +23,7 @@ const options = {
       },
     ],
   },
-  apis: [""],
+  apis: ["./routes/api/v1/note/index.ts"],
 };
 
 export default swaggerJSDoc(options);
