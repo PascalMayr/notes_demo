@@ -1,4 +1,6 @@
 import express from 'express'
+import NoteController from '../../../../controllers/note.js'
+import { Request, Response } from 'express'
 
 const router = express.Router();
 
@@ -12,6 +14,9 @@ const router = express.Router();
  *         description: Returns an array of notes object.
  */
 router.get('/', async (_req: Request, res: Response) => {
+  const { getNotes } = new NoteController()
+  const notes = await getNotes()
+  res.status(200).json(notes)
 })
 
 /**
@@ -24,6 +29,9 @@ router.get('/', async (_req: Request, res: Response) => {
  *         description: Returns an array of notes object.
  */
 router.post('/', async (req: Request, res: Response) => {
+  const { setNote } = new NoteController()
+  const notes = await setNote(req.body)
+  res.status(200).json(notes)
 })
 
 /**
@@ -39,6 +47,9 @@ router.post('/', async (req: Request, res: Response) => {
  *         description: Returns the updated note.
  */
 router.put('/', async (req: Request, res: Response) => {
+  const { updateNote } = new NoteController()
+  const note = await updateNote(req.body)
+  res.status(200).json(note)
 })
 
 /**
@@ -54,6 +65,9 @@ router.put('/', async (req: Request, res: Response) => {
  *         description: Returns an array of notes object without the deleted object.
  */
 router.delete('/', async (req: Request, res: Response) => {
+  const { deleteNote } = new NoteController()
+  const notes = await deleteNote(req.body.id)
+  res.status(200).json(notes)
 })
 
 export default router
