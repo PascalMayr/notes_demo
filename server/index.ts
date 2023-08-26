@@ -17,6 +17,9 @@ app.use(
   swaggerUi.serve,
   swaggerUi.setup(swaggerSpecs, { explorer: true })
 )
+// Note API routes
+app.use('/api/v1/note', notesRouter)
+
 app.listen(port, () => {
   console.log(chalk.green(`Server listening at http://localhost:${port}`));
 })
