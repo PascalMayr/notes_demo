@@ -4,6 +4,7 @@ import swaggerSpecs from './utils/swagger.js'
 import cors from 'cors'
 import chalk from 'chalk'
 import notesRouter from './routes/api/v1/note/index.js'
+import morgan from 'morgan'
 
 const app = express()
 const port = process.env.port || 3000
@@ -11,6 +12,7 @@ const port = process.env.port || 3000
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
+app.use(morgan('tiny'));
 // API docs
 app.use(
   "/api-docs",
