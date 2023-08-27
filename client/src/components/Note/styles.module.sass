@@ -1,0 +1,38 @@
+@use 'styles/colors' as *
+
+.list
+  display: flex
+  flex-direction: column
+  padding: 2rem 2rem
+  width: calc(100% - 200px)
+
+  .tools
+    display: flex
+    gap: 1rem
+    user-select: none
+
+    .tool
+      font-size: 2rem
+      padding: 0.5rem 1rem
+      border-radius: 1rem
+      color: $white
+
+    .tool:hover
+      background-color: $light-blue
+      cursor: pointer
+
+  .title
+    font-size: 3rem
+    color: $light-blue
+    padding: 0 0 1rem 0
+
+  .content
+    font-size: 1rem
+    color: $white
+    border-radius: 5px
+    padding: 1rem
+    border: 1px solid $white
+
+  .content:focus
+    background: $white
+    color: $black
