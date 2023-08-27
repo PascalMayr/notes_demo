@@ -5,6 +5,7 @@ function App() {
   const { current } = useApp()
   return (
     <section className="containers">
+      <List />
     </section>
   )
 }
