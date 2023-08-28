@@ -1,15 +1,17 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import App from './App'
 import { AppContextProvider } from './context/AppContext'
 
 import './styles/global.sass'
 
-ReactDOM.render(
+const domNode = document.getElementById('root') as HTMLElement
+const root = createRoot(domNode)
+
+root.render(
   <React.StrictMode>
     <AppContextProvider>
       <App />
     </AppContextProvider>
-  </React.StrictMode>,
-  document.getElementById('root')
+  </React.StrictMode>
 )
