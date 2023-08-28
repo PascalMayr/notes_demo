@@ -19,6 +19,14 @@ export interface INote {
 interface IAppContext {
   notes: INote[]
   current?: INote
+
+export const initialContext = {
+  notes: [],
+  loading: false,
+  current: { title: 'title', content: '' },
+  setCurrent: (_note: React.SetStateAction<INote>) => {},
+  saveNote: (id?: number) => {},
+  removeNote: (id?: number) => {},
 }
 
 // Create app context object
@@ -32,6 +40,7 @@ const useApp = () => useContext(AppContext)
 // Create app context provider
 const AppContextProvider = ({ children }: { children: ReactNode }) => {
   const [notes, setNotes] = useState<INote[]>([])
+  const [current, setCurrent] = useState<INote>(initialContext.current)
   // App context function to get all notes
   const getNotes = async () => {
     const result: INote[] = (await clientApi('/note')) || []
@@ -56,7 +65,7 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <AppContext.Provider
-      value={{ notes, addNote, saveNote, removeNote, current }}
+      value={{ notes, saveNote, removeNote, setCurrent, current, loading }}
     >
       {children}
     </AppContext.Provider>
