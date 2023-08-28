@@ -19,6 +19,10 @@ export interface INote {
 interface IAppContext {
   notes: INote[]
   current?: INote
+  saveNote: (id?: number) => void
+  setCurrent: (note: React.SetStateAction<INote>) => void
+  removeNote: (id?: number) => void
+}
 
 export const initialContext = {
   notes: [],
@@ -30,9 +34,7 @@ export const initialContext = {
 }
 
 // Create app context object
-const AppContext = createContext<IAppContext>({
-  notes: [],
-})
+const AppContext = createContext<IAppContext>(initialContext)
 
 // Create custom hook to use app context
 const useApp = () => useContext(AppContext)
@@ -54,9 +56,47 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
         : 0
       return noteBUpdated - noteAUpdated
     })
+    setCurrent(sorted[0] || initialContext.current)
     setNotes(sorted)
   }
 
+  // App context function to delete a note
+  const removeNote = async (id?: number) => {
+    if (!id) {
+      setCurrent(initialContext.current)
+      return
+    }
+    setLoading(true)
+    await clientApi(`/note/${id}`, { method: 'DELETE' })
+    await getNotes()
+    setLoading(false)
+  }
+
+  // App context function to create a new note or update it
+  const saveNote = async (id?: number) => {
+    // save current note
+    if (current) {
+      setLoading(true)
+      // update or create note
+      if (current.id) {
+        await clientApi(`/note`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(current),
+        })
+        await getNotes()
+        setLoading(false)
+        return
+      }
+      await clientApi('/note', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(current),
+      })
+      await getNotes()
+      setLoading(false)
+    }
+  }
 
   useEffect(() => {
     // call api to get newest notes
