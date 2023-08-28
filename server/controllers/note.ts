@@ -1,7 +1,5 @@
 import { Note } from "@prisma/client"
-import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
+import sanitize from 'sanitize-html'
 
 export default class NoteController {
   /*
@@ -26,20 +24,24 @@ export default class NoteController {
   * @returns {Array<Object>} - Notes
   */
   public async setNote(note: Note): Promise<Note[]> {
-    try {
-      // create new note
-      const { title, content } = note;
-      await prisma.note.create({
-        data: {
-          title,
-          content
-        },
-      })
-      // return all notes including the new one
-      return await prisma.note.findMany();
-    } catch(e: any) {
-      throw new Error('Error creating note', e)
+    // create new note
+    const { title, content } = note;
+    const sanitizeConf = {
+      allowedTags: ['b', 'i', 'a', 'p', 'br', 'div', 'span'],
+      allowedAttributes: { a: ['href'] },
     }
+
+    // prevent xss attacks
+    const sanitizedContent = sanitize(content, sanitizeConf)
+    const sanitizedTitle = sanitize(title, sanitizeConf)
+    await prisma.note.create({
+      data: {
+        title: sanitizedTitle,
+        content: sanitizedContent
+      },
+    })
+    // return all notes including the new one
+    return await prisma.note.findMany();
   }
 
   /*
