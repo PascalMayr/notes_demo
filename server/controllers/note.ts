@@ -1,4 +1,5 @@
 import { Note } from "@prisma/client"
+import prisma from "../prisma/config"
 import sanitize from 'sanitize-html'
 
 export default class NoteController {
@@ -9,12 +10,7 @@ export default class NoteController {
   * @returns {Array<Object>} - Notes
   */
   public async getNotes(): Promise<Note[]> {
-    try {
-      // get all notes
-      return await prisma.note.findMany();
-    } catch(e: any) {
-      throw new Error( 'Error getting notes', e)
-    }
+    return await prisma.note.findMany();
   }
 
   /*
@@ -51,19 +47,16 @@ export default class NoteController {
   * @returns {Object} - Note
   */
   public async updateNote(note: Note): Promise<Note> {
-    try {
-      // update note
-      const updatedNote = await prisma.note.update({
-        where: { id: note.id },
-        data: {
-          title: note.title,
-          content: note.content
-        }
-      })
-      return updatedNote;
-    } catch(e: any) {
-      throw new Error('Error updating note', e)
-    }
+    // update note
+    const { id, title, content } = note
+    const updatedNote = await prisma.note.update({
+      where: { id },
+      data: {
+        title,
+        content
+      }
+    })
+    return updatedNote
   }
 
   /*
@@ -73,14 +66,10 @@ export default class NoteController {
   * @returns {Object} - Note
   */
   public async deleteNote(id: number): Promise<Note>{
-    try {
-      // set notes logic
-      const deletedNote = await prisma.note.delete({
-        where: { id }
-      })
-      return deletedNote;
-    } catch(e: any) {
-      throw new Error('Error deleting note', e)
-    }
+    // set notes logic
+    const deletedNote = await prisma.note.delete({
+      where: { id }
+    })
+    return deletedNote;
   }
 }
