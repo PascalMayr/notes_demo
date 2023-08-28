@@ -1,18 +1,63 @@
 import { Prisma } from "@prisma/client"
 import chalk from "chalk"
-import { Request, Response } from "express";
+import { Response } from "express";
 
 /*
 * Catch all errors and log
+* @param {Error} error
+* @param {Response} response
+* @returns {void}
 */
-function errorHandler(error: any, res: Response, req: Request) {
-  if (error instanceof Prisma.PrismaClientKnownRequestError) {
-    console.log(chalk.blue('Database error'));
+class ErrorHandler {
+  /*
+  * Check if error is trusted
+  * @param {Error} error
+  * @returns {boolean}
+  */
+  private isTrustedError(error: Error): boolean {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      return true
+    }
+    return false
+   }
+
+  /*
+  * Handle trusted errors
+  * @param {Error} error
+  * @param {Response} response
+  * @returns {void}
+  */
+  private handleTrustedError(error: Error, response: Response): void {
+    response.status(400).json({ error: error.message })
   }
-  console.log(error.message)
-  // internal server error
-  res.status(500)
-  res.send({ error: error.message })
+
+  /*
+  * Handle critical errors
+  * @param {Error} error
+  * @param {Response} response
+  * @returns {void}
+  */
+  private handleCriticalError(error: Error, response: Response): void {
+    console.error(chalk.red(error))
+    response.status(500).json({ error: 'Internal Server Error' })
+  }
+
+  /*
+  * Handle errors
+  * @param {Error} error
+  * @param {Response} response
+  * @returns {void}
+  */
+  public handleError(error: Error, response?: Response): void {
+    if (this.isTrustedError(error) && response) {
+      this.handleTrustedError(error, response);
+    }
+    if (!this.isTrustedError(error) && response) {
+      this.handleCriticalError(error, response);
+    }
+  }
 }
+
+const errorHandler = new ErrorHandler()
 
 export default errorHandler

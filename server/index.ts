@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { NextFunction, Request, Response } from 'express'
 import swaggerUi from 'swagger-ui-express'
 import swaggerSpecs from './utils/swagger.js'
 import cors from 'cors'
@@ -23,7 +23,9 @@ app.use(
 // Note API routes
 app.use('/api/v1/note', notesRouter)
 // Add error handler
-app.use(errorHandler)
+app.use((error: Error, _req: Request, res: Response, next: NextFunction) => {
+  errorHandler.handleError(error, res);
+});
 
 app.listen(port, () => {
   console.log(chalk.green(`Server listening at http://localhost:${port}`));

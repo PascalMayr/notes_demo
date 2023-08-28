@@ -1,6 +1,7 @@
 import express from 'express'
 import NoteController from '../../../../controllers/note.js'
 import { Request, Response } from 'express'
+import tryCatch from '../../../../utils/tryCatch.js';
 
 const router = express.Router();
 
@@ -13,11 +14,11 @@ const router = express.Router();
  *       200:
  *         description: Returns an array of notes object.
  */
-router.get('/', async (_req: Request, res: Response) => {
+router.get('/', tryCatch(async (_req: Request, res: Response) => {
   const { getNotes } = new NoteController()
   const notes = await getNotes()
   res.status(200).json(notes)
-})
+}))
 
 /**
  * @swagger
@@ -28,11 +29,11 @@ router.get('/', async (_req: Request, res: Response) => {
  *       200:
  *         description: Returns an array of notes object.
  */
-router.post('/', async (req: Request, res: Response) => {
+router.post('/', tryCatch(async (req: Request, res: Response) => {
   const { setNote } = new NoteController()
   const notes = await setNote(req.body)
   res.status(200).json(notes)
-})
+}))
 
 /**
  * @swagger
@@ -46,11 +47,11 @@ router.post('/', async (req: Request, res: Response) => {
  *       200:
  *         description: Returns the updated note.
  */
-router.put('/', async (req: Request, res: Response) => {
+router.put('/', tryCatch(async (req: Request, res: Response) => {
   const { updateNote } = new NoteController()
   const note = await updateNote(req.body)
   res.status(200).json(note)
-})
+}))
 
 /**
  * @swagger
@@ -64,10 +65,10 @@ router.put('/', async (req: Request, res: Response) => {
  *       200:
  *         description: Returns an array of notes object without the deleted object.
  */
-router.delete('/', async (req: Request, res: Response) => {
+router.delete('/', tryCatch(async (req: Request, res: Response) => {
   const { deleteNote } = new NoteController()
   const notes = await deleteNote(req.body.id)
   res.status(200).json(notes)
-})
+}))
 
 export default router
