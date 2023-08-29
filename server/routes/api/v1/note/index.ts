@@ -65,9 +65,9 @@ router.put('/', tryCatch(async (req: Request, res: Response) => {
  *       200:
  *         description: Returns an array of notes object without the deleted object.
  */
-router.delete('/', tryCatch(async (req: Request, res: Response) => {
+router.delete('/:id', tryCatch(async (req: Request, res: Response) => {
   const { deleteNote } = new NoteController()
-  const notes = await deleteNote(req.body.id)
+  const notes = await deleteNote(Number(req.params.id))
   res.status(200).json(notes)
 }))
 
