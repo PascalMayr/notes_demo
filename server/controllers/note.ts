@@ -27,7 +27,7 @@ export default class NoteController {
       allowedAttributes: { a: ['href'] },
     }
 
-    // prevent xss attacks
+    // sanitize content and title
     const sanitizedContent = sanitize(content, sanitizeConf)
     const sanitizedTitle = sanitize(title, sanitizeConf)
     await prisma.note.create({

@@ -43,6 +43,7 @@ const useApp = () => useContext(AppContext)
 // Create app context provider
 const AppContextProvider = ({ children }: { children: ReactNode }) => {
   const [notes, setNotes] = useState<INote[]>([])
+  // current note
   const [current, setCurrent] = useState<INote>(initialContext.current)
   const [loading, setLoading] = useState<boolean>(initialContext.loading)
 

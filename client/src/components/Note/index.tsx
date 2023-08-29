@@ -22,7 +22,7 @@ function Note({ id }: INote) {
         allowedAttributes: { a: ['href'] },
       }
 
-      // prevent xss attacks
+      // sanitize
       const content = sanitize(event.target.innerHTML, sanitizeConf)
       const dataContent = event.target.getAttribute('data-content')
       if (dataContent === 'title') {
