@@ -112,7 +112,7 @@ router.put('/', tryCatch(async (req: Request, res: Response) => {
 router.delete('/:id', tryCatch(async (req: Request, res: Response) => {
   const { deleteNote } = new NoteController()
   await deleteNote(Number(req.params.id))
-  res.status(200)
+  res.status(200).json({})
 }))
 
 export default router
