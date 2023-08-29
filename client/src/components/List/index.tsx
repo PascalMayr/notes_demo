@@ -11,7 +11,8 @@ function List() {
   return (
     <div className={styles.list}>
       <div className={styles.note} onClick={handleAddNote}>
-        +
+        {/* + symbol */}
+        {'\u002B'}
       </div>
       {notes.map((note) => (
         <ListItem key={note.id} {...note} />
