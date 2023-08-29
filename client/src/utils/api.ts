@@ -11,7 +11,11 @@ const clientApi = async <T>(
   path: string,
   init: RequestInit = {}
 ): Promise<T | undefined> => {
-  return await (await fetch(`${API_URL}${path}`, init)).json()
+  const res = await fetch(`${API_URL}${path}`, {
+    headers: { 'Content-Type': 'application/json' },
+    ...init,
+  })
+  return await res.json()
 }
 
 export default clientApi

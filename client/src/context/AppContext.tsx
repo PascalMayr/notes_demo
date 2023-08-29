@@ -85,7 +85,7 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
       if (current.id) {
         await clientApi(`/notes`, {
           method: 'PUT',
-          body: JSON.stringify(current)
+          body: JSON.stringify(current),
         })
         await getNotes()
         setLoading(false)
@@ -93,7 +93,7 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
       }
       await clientApi('/notes', {
         method: 'POST',
-        body: JSON.stringify(current)
+        body: JSON.stringify(current),
       })
       await getNotes()
       setLoading(false)
