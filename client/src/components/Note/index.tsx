@@ -2,6 +2,7 @@ import { INote, useApp } from 'context/AppContext'
 import styles from './styles.module.sass'
 import { useCallback } from 'react'
 import sanitize from 'sanitize-html'
+import Tool from 'components/Tool'
 
 function Note({ id }: INote) {
   const { removeNote, saveNote, setCurrent, current, loading } = useApp()
@@ -37,18 +38,8 @@ function Note({ id }: INote) {
   return (
     <div className={styles.list}>
       <div className={styles.tools}>
-        <div
-          className={`${styles.tool} ${loading && styles.disabled}`}
-          onClick={handleSave}
-        >
-          💾
-        </div>
-        <div
-          className={`${styles.tool} ${loading && styles.disabled}`}
-          onClick={handleRemove}
-        >
-          🗑️
-        </div>
+        <Tool onClick={handleSave}>💾</Tool>
+        <Tool onClick={handleRemove}>🗑️</Tool>
       </div>
       <div
         onBlur={onContentBlur}
