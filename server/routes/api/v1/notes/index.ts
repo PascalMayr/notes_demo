@@ -82,6 +82,8 @@ router.put('/', tryCatch(async (req: Request, res: Response) => {
  *        name: id
  *     responses:
  *       200:
+ *        description: Returns an empty object.
+ *
  *
  * components:
  *   schemas:
