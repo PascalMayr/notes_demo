@@ -31,3 +31,5 @@ cd client && npm start
 cd server && npm run dev
 ```
 
+## API Docs
+To see the API Documentation open http://localhost:3001/api-docs/
