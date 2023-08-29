@@ -13,6 +13,10 @@ const router = express.Router();
  *     responses:
  *       200:
  *         description: Returns an array of notes object.
+ *         content:
+ *          application/json:
+ *            schema:
+ *             $ref: '#/components/schemas/Notes'
  */
 router.get('/', tryCatch(async (_req: Request, res: Response) => {
   const { getNotes } = new NoteController()
@@ -25,9 +29,18 @@ router.get('/', tryCatch(async (_req: Request, res: Response) => {
  * /api/v1/note:
  *   post:
  *     description: create a new note
+ *     parameters:
+ *      - in: body
+ *        description: the new note object without id
+ *        schema:
+ *          $ref: '#/components/schemas/Note'
  *     responses:
  *       200:
- *         description: Returns an array of notes object.
+ *         description: Returns an array of notes object, including the new created note
+ *         content:
+ *          application/json:
+ *            schema:
+ *             $ref: '#/components/schemas/Notes'
  */
 router.post('/', tryCatch(async (req: Request, res: Response) => {
   const { setNote } = new NoteController()
@@ -37,15 +50,21 @@ router.post('/', tryCatch(async (req: Request, res: Response) => {
 
 /**
  * @swagger
- * /api/v1/note/{id}:
+ * /api/v1/note:
  *   put:
  *     description: updates a note
  *     parameters:
- *      - in: path
- *        name: id
+ *      - in: body
+ *        description: the note object with id to update
+ *        schema:
+ *          $ref: '#/components/schemas/Note'
  *     responses:
  *       200:
  *         description: Returns the updated note.
+ *         content:
+ *          application/json:
+ *            schema:
+ *             $ref: '#/components/schemas/Note'
  */
 router.put('/', tryCatch(async (req: Request, res: Response) => {
   const { updateNote } = new NoteController()
@@ -63,7 +82,37 @@ router.put('/', tryCatch(async (req: Request, res: Response) => {
  *        name: id
  *     responses:
  *       200:
- *         description: Returns an array of notes object without the deleted object.
+ *         description: Returns the deleted note.
+ *         content:
+ *          application/json:
+ *            schema:
+ *             $ref: '#/components/schemas/Note'
+ *
+ * components:
+ *   schemas:
+ *    Notes:
+ *     type: array
+ *     items:
+ *       $ref: '#/components/schemas/Note'
+ *    Note:
+ *     type: object
+ *     properties:
+ *       id:
+ *         type: integer
+ *         description: The note ID.
+ *       title:
+ *         type: string
+ *         description: The note title.
+ *       content:
+ *         type: string
+ *         description: The note content.
+ *       createdAt:
+ *         type: string
+ *         description: The note creation date.
+ *       updatedAt:
+ *         type: string
+ *         description: The note update date.
+ *
  */
 router.delete('/:id', tryCatch(async (req: Request, res: Response) => {
   const { deleteNote } = new NoteController()

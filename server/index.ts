@@ -18,7 +18,7 @@ app.use(morgan('tiny'));
 app.use(
   "/api-docs",
   swaggerUi.serve,
-  swaggerUi.setup(swaggerSpecs, { explorer: true })
+  swaggerUi.setup(swaggerSpecs, { explorer: false })
 )
 // Note API routes
 app.use('/api/v1/note', notesRouter)
