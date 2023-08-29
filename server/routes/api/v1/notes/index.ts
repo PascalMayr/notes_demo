@@ -7,7 +7,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /api/v1/note:
+ * /api/v1/notes:
  *   get:
  *     description: get all notes
  *     responses:
@@ -26,7 +26,7 @@ router.get('/', tryCatch(async (_req: Request, res: Response) => {
 
 /**
  * @swagger
- * /api/v1/note:
+ * /api/v1/notes:
  *   post:
  *     description: create a new note
  *     parameters:
@@ -50,7 +50,7 @@ router.post('/', tryCatch(async (req: Request, res: Response) => {
 
 /**
  * @swagger
- * /api/v1/note:
+ * /api/v1/notes:
  *   put:
  *     description: updates a note
  *     parameters:
@@ -74,7 +74,7 @@ router.put('/', tryCatch(async (req: Request, res: Response) => {
 
 /**
  * @swagger
- * /api/v1/note/{id}:
+ * /api/v1/notes/{id}:
  *   delete:
  *     description: deletes a note
  *     parameters:
@@ -82,11 +82,6 @@ router.put('/', tryCatch(async (req: Request, res: Response) => {
  *        name: id
  *     responses:
  *       200:
- *         description: Returns the deleted note.
- *         content:
- *          application/json:
- *            schema:
- *             $ref: '#/components/schemas/Note'
  *
  * components:
  *   schemas:
@@ -116,8 +111,8 @@ router.put('/', tryCatch(async (req: Request, res: Response) => {
  */
 router.delete('/:id', tryCatch(async (req: Request, res: Response) => {
   const { deleteNote } = new NoteController()
-  const notes = await deleteNote(Number(req.params.id))
-  res.status(200).json(notes)
+  await deleteNote(Number(req.params.id))
+  res.status(200)
 }))
 
 export default router

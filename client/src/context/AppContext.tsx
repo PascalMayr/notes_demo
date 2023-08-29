@@ -49,7 +49,7 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
 
   // App context function to get all notes
   const getNotes = async () => {
-    const result: INote[] = (await clientApi('/note')) || []
+    const result: INote[] = (await clientApi('/notes')) || []
 
     const sorted = result.sort((noteA: INote, noteB: INote) => {
       const noteBUpdated = noteB.updatedAt
@@ -71,7 +71,7 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
       return
     }
     setLoading(true)
-    await clientApi(`/note/${id}`, { method: 'DELETE' })
+    await clientApi(`/notes/${id}`, { method: 'DELETE' })
     await getNotes()
     setLoading(false)
   }
@@ -83,19 +83,17 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
       setLoading(true)
       // update or create note
       if (current.id) {
-        await clientApi(`/note`, {
+        await clientApi(`/notes`, {
           method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(current),
+          body: JSON.stringify(current)
         })
         await getNotes()
         setLoading(false)
         return
       }
-      await clientApi('/note', {
+      await clientApi('/notes', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(current),
+        body: JSON.stringify(current)
       })
       await getNotes()
       setLoading(false)

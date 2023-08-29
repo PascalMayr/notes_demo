@@ -3,7 +3,7 @@ import swaggerUi from 'swagger-ui-express'
 import swaggerSpecs from './utils/swagger.js'
 import cors from 'cors'
 import chalk from 'chalk'
-import notesRouter from './routes/api/v1/note/index.js'
+import notesRouter from './routes/api/v1/notes/index.js'
 import morgan from 'morgan'
 import errorHandler from './utils/errorHandler.js'
 
@@ -21,7 +21,7 @@ app.use(
   swaggerUi.setup(swaggerSpecs, { explorer: false })
 )
 // Note API routes
-app.use('/api/v1/note', notesRouter)
+app.use('/api/v1/notes', notesRouter)
 // Add error handler
 app.use((error: Error, _req: Request, res: Response, next: NextFunction) => {
   errorHandler.handleError(error, res);
