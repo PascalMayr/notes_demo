@@ -4,6 +4,7 @@ import { Request, Response } from 'express'
 import tryCatch from '../../../../utils/tryCatch.js';
 
 const router = express.Router();
+const { getNotes , setNote, updateNote, deleteNote } = new NoteController()
 
 /**
  * @swagger
@@ -19,7 +20,6 @@ const router = express.Router();
  *             $ref: '#/components/schemas/Notes'
  */
 router.get('/', tryCatch(async (_req: Request, res: Response) => {
-  const { getNotes } = new NoteController()
   const notes = await getNotes()
   res.status(200).json(notes)
 }))
@@ -43,7 +43,6 @@ router.get('/', tryCatch(async (_req: Request, res: Response) => {
  *             $ref: '#/components/schemas/Notes'
  */
 router.post('/', tryCatch(async (req: Request, res: Response) => {
-  const { setNote } = new NoteController()
   const notes = await setNote(req.body)
   res.status(200).json(notes)
 }))
@@ -67,7 +66,6 @@ router.post('/', tryCatch(async (req: Request, res: Response) => {
  *             $ref: '#/components/schemas/Note'
  */
 router.put('/', tryCatch(async (req: Request, res: Response) => {
-  const { updateNote } = new NoteController()
   const note = await updateNote(req.body)
   res.status(200).json(note)
 }))
@@ -112,7 +110,6 @@ router.put('/', tryCatch(async (req: Request, res: Response) => {
  *
  */
 router.delete('/:id', tryCatch(async (req: Request, res: Response) => {
-  const { deleteNote } = new NoteController()
   await deleteNote(Number(req.params.id))
   res.status(200).json({})
 }))
